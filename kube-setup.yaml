@@ -1,0 +1,148 @@
+#Traefik comes with gateway related CRDS. By default, K3s Traefik only looks for Ingress. You need to tell it to look for Gateway resources.
+#K3s will automatically detect this file and restart Traefik with the new settings.
+#  sudo vi /var/lib/rancher/k3s/server/manifests/traefik-config.yaml
+#apiVersion: helm.cattle.io/v1
+#kind: HelmChartConfig
+#metadata:
+#  name: traefik
+#  namespace: kube-system
+#spec:
+#  valuesContent: |-
+#    providers:
+#      kubernetesGateway:
+#        enabled: true
+# Create a namespace for traefik gateway
+# kubectl create ns traefik
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: traefik-gateway
+  namespace: traefik
+spec:
+  gatewayClassName: traefik
+  listeners:
+  - name: http
+    protocol: HTTP
+    port: 8000 # traefik is listening on 8000. Ask chatgpt why 8000 is set
+    #hostname: "www.salmanisha.com" # donot use this
+    allowedRoutes:
+      namespaces:
+        from: All
+
+# Create a namespace for Production
+# kubectl create ns portfolio-prod
+# docker hub personal access token
+
+kubectl create secret docker-registry dockerregcred --docker-server=https://index.docker.io/v1/ --docker-username=salmanisha --docker-password=<see lastpass for the docker token> --docker-email=salmanisha.sp@gmail.com
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portfolio-prod
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: portfolio-prod
+  template:
+    metadata:
+      labels:
+        app: portfolio-prod
+    spec:
+      imagePullSecrets:
+      - name: dockerregcred
+      containers:
+      - name: portfolio
+        image: docker.io/salmanisha/portfolio:v1.0.1
+        resources:
+          requests:
+            cpu: "80m"
+            memory: "160Mi"
+          limits:
+            cpu: "150m"
+            memory: "256Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: null
+  name: portfolio-prod-svc
+  namespace: portfolio-prod
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: portfolio-prod
+  type: ClusterIP
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: portfolio-httproute
+  namespace: portfolio-prod
+spec:
+  parentRefs:
+  - name: traefik-gateway
+    namespace: traefik
+  hostnames:
+  - "www.salmanisha.com"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: portfolio-prod-svc
+      port: 8080
+
+########################### Headlamp HTTP Route #####################################
+
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: headlamp-httproute
+  namespace: kube-system
+spec:
+  parentRefs:
+  - name: traefik-gateway
+    namespace: traefik
+  hostnames:
+  - "headlamp.salmanisha.com"
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: headlamp
+      port: 80
+
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: portfolio-hpa
+  namespace: portfolio-prod
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: portfolio-prod
+  minReplicas: 1
+  maxReplicas: 3
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 60  # Scales up if average CPU usage > 60% of request
+

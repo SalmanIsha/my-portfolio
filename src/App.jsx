@@ -103,16 +103,26 @@ const App = () => {
       {/* Navbar */}
       <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-[#0a0a0c]/80 backdrop-blur-md border-b border-white/5 py-4' : 'bg-transparent py-6'}`}>
         <div className="max-w-6xl mx-auto px-6 flex justify-between items-center">
-          <div className="flex items-center gap-2 group cursor-pointer">
+          <a href="#" className="flex items-center gap-2 group cursor-pointer">
             <div className="w-8 h-8 bg-blue-600 rounded flex items-center justify-center font-bold text-white group-hover:rotate-12 transition-transform">S</div>
             <span className="font-bold text-xl tracking-tight text-white">Mohd Salman Isha</span>
-          </div>
+          </a>
           
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="#expertise" className="hover:text-blue-400 transition-colors">Expertise</a>
             <a href="#work" className="hover:text-blue-400 transition-colors">Featured Work</a>
             <a href="#about" className="hover:text-blue-400 transition-colors">Certifications</a>
-            <a href="mailto:salman.isha@hotmail.com" className="px-5 py-2 bg-white text-black rounded-full hover:bg-blue-500 hover:text-white transition-all">Get in touch</a>
+            {/* Blog Link */}
+            <a href="https://blog.salmanisha.com" className="hover:text-blue-400 transition-colors">Blog</a>
+             {/* Download CV Button */}
+            <a 
+              href="/CV_Salman_Isha.pdf" 
+              download="CV_Salman_Isha.pdf"
+              className="flex items-center gap-2 px-5 py-2 bg-white text-black rounded-full hover:bg-emerald-600 hover:text-white transition-all font-bold shadow-lg shadow-white/5"
+            >
+              <Download size={16} />
+              Download CV
+            </a>
           </div>
 
           <button className="md:hidden text-white" onClick={() => setIsMenuOpen(!isMenuOpen)}>
@@ -125,10 +135,19 @@ const App = () => {
       {isMenuOpen && (
         <div className="fixed inset-0 z-40 bg-[#0a0a0c] pt-24 px-6 md:hidden">
           <div className="flex flex-col gap-6 text-2xl font-bold">
+            <a href="#" onClick={() => setIsMenuOpen(false)}>Home</a>
             <a href="#expertise" onClick={() => setIsMenuOpen(false)}>Expertise</a>
             <a href="#work" onClick={() => setIsMenuOpen(false)}>Work</a>
             <a href="#about" onClick={() => setIsMenuOpen(false)}>Certifications</a>
-            <a href="mailto:salman.isha@hotmail.com" className="text-blue-500">Contact</a>
+            <a href="https://blog.salmanisha.com" onClick={() => setIsMenuOpen(false)}>Blog</a>
+            <a 
+              href="/CV_Salman_Isha.pdf" 
+              download 
+              className="text-emerald-500 flex items-center gap-2"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Download /> Download CV
+            </a>
           </div>
         </div>
       )}
