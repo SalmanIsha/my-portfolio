@@ -42,7 +42,7 @@ via Traefik Gateway API with an HPA. Local dev runs inside Docker.
 - [ ] **10. Fix dependencies in `package.json`**:
   - Move `lucide-react` from `devDependencies` to `dependencies` (runtime dep).
   - Remove `autoprefixer` and `postcss` (unneeded with Tailwind v4 Vite plugin).
-- [ ] **11. Rewrite `README.md`** — currently the default Vite template. Should
+- [x] **11. Rewrite `README.md`** (FIXED 2026-08-07) — currently the default Vite template. Should
   document the actual project: architecture, local dev (Docker), build, deploy
   process. For a DevOps portfolio the README is part of the showcase.
 
