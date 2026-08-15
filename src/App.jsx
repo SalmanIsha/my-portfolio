@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Github, 
   Linkedin, 
-  Mail, 
   Terminal, 
   Server, 
   ShieldCheck, 
   Cloud, 
-  Database, 
   Code2, 
   ExternalLink, 
   Download,
@@ -17,7 +15,9 @@ import {
   Award,
   Zap,
   CheckCircle2,
-  Send
+  Send,
+  Phone,
+  MapPin
 } from 'lucide-react';
 
 const App = () => {
@@ -32,9 +32,9 @@ const App = () => {
 
   const stats = [
     { label: 'Years Experience', value: '10+' },
-    { label: 'Cloud Savings', value: '$19k+' },
-    { label: 'System Uptime', value: '99.9%' },
-    { label: 'Deployment Speed', value: '+60%' }
+    { label: 'Annual Cloud Savings', value: '$19k+' },
+    { label: 'Client-Facing Uptime', value: '99.9%' },
+    { label: 'Faster Deployments', value: '60%' }
   ];
 
   const certifications = [
@@ -62,7 +62,7 @@ const App = () => {
     },
     {
       title: "IaC & Automation",
-      desc: "Terraform & Ansible expert. Automating resource lifecycles to ensure consistent, auditable environments.",
+      desc: "Automating resource lifecycles with Terraform & Ansible — consistent, auditable infrastructure across AWS and Azure.",
       icon: <Terminal className="w-6 h-6 text-purple-400" />
     },
     {
@@ -79,23 +79,42 @@ const App = () => {
 
   const projects = [
     {
-      title: "Cloud Cost Optimization Engine",
+      title: "Cloud Cost Optimization",
       impact: "$19,000+ Annual Savings",
-      desc: "Rerouted database backups from EFS to optimized EBS and analyzed multi-cloud expenditure to reduce monthly spend by 98%.",
-      tags: ["AWS", "EBS/EFS", "Cost Analysis"]
+      desc: "Discovered a costly EFS backup misconfiguration and rerouted database backups to optimized EBS storage — cutting monthly cloud spend by 98% (~$19,000+ annualised).",
+      tags: ["AWS", "EBS/EFS", "FinOps"]
     },
     {
       title: "National Biometric Infrastructure",
-      impact: "Millions of Records",
-      desc: "Architected core system for Biometric Residence Cards, implementing Kafka clusters for high-volume data ingestion.",
-      tags: ["Kafka", "PostgreSQL", "On-Premise"]
+      impact: "Millions of Citizen Records",
+      desc: "Engineered the core platform for a government Biometric Residence Card system with 24/7 high-throughput demands. Architected Kafka clusters for low-latency ingestion — 99.99% data durability with sub-second delivery to downstream services.",
+      tags: ["Kafka", "PostgreSQL", "MinIO", "On-Premise"]
     },
     {
       title: "Cross-Cloud Monitoring Hub",
-      impact: "+40% Visibility",
-      desc: "Engineered a centralized Zabbix platform spanning AWS and Azure for proactive fault detection.",
+      impact: "100+ Servers Monitored",
+      desc: "Designed and deployed a centralised Zabbix platform spanning AWS and Azure, extending coverage to 100+ servers with threshold-based alerts and triggers for on-call responders.",
       tags: ["Zabbix", "Multi-Cloud", "Monitoring"]
+    },
+    {
+      // Hidden until the remaining site improvements land (CONTENT-PLAN.md section 5)
+      visible: false,
+      title: "This Site: Self-Hosted Infrastructure",
+      impact: "3 Replicas, Auto-Scaled",
+      desc: "This portfolio runs on my own K3s cluster — multi-stage Docker build, nginx, Traefik Gateway API routing, and a CPU-based HorizontalPodAutoscaler.",
+      tags: ["K3s", "Docker", "Traefik", "Gateway API"]
     }
+  ];
+
+  const skillGroups = [
+    { category: "Cloud Platforms", skills: ["AWS", "Azure", "Multi-Cloud Strategy"] },
+    { category: "Containers", skills: ["Kubernetes (CKA)", "EKS", "Docker", "Helm", "K3s"] },
+    { category: "IaC & CI/CD", skills: ["Terraform", "Ansible", "GitHub Actions", "Jenkins", "GoCD", "GitOps"] },
+    { category: "Observability", skills: ["Zabbix", "ELK Stack", "Incident Response"] },
+    { category: "Data & Streaming", skills: ["Kafka", "PostgreSQL", "MySQL", "Redis", "MinIO"] },
+    { category: "Security & Compliance", skills: ["GuardDuty", "Security Hub", "WAF", "Nessus", "IAM"] },
+    { category: "Reliability & FinOps", skills: ["High Availability", "Disaster Recovery", "Cost Optimization", "Rightsizing"] },
+    { category: "Scripting & OS", skills: ["Python", "Bash", "Linux Administration"] }
   ];
 
   return (
@@ -111,6 +130,7 @@ const App = () => {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium">
             <a href="#expertise" className="hover:text-blue-400 transition-colors">Expertise</a>
             <a href="#work" className="hover:text-blue-400 transition-colors">Featured Work</a>
+            <a href="#skills" className="hover:text-blue-400 transition-colors">Skills</a>
             <a href="#about" className="hover:text-blue-400 transition-colors">Certifications</a>
             {/* Blog Link */}
             <a href="https://blog.salmanisha.com" className="hover:text-blue-400 transition-colors">Blog</a>
@@ -138,6 +158,7 @@ const App = () => {
             <a href="#" onClick={() => setIsMenuOpen(false)}>Home</a>
             <a href="#expertise" onClick={() => setIsMenuOpen(false)}>Expertise</a>
             <a href="#work" onClick={() => setIsMenuOpen(false)}>Work</a>
+            <a href="#skills" onClick={() => setIsMenuOpen(false)}>Skills</a>
             <a href="#about" onClick={() => setIsMenuOpen(false)}>Certifications</a>
             <a href="https://blog.salmanisha.com" onClick={() => setIsMenuOpen(false)}>Blog</a>
             <a 
@@ -168,23 +189,28 @@ const App = () => {
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-white leading-[1.1] mb-8 max-w-4xl">
-            DevOps Engineer & <br /> 
+            Senior DevOps Engineer & <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500 font-extrabold tracking-tight">Infrastructure Architect.</span>
           </h1>
           
           <p className="text-xl text-slate-400 max-w-2xl mb-10 leading-relaxed">
-            Over 10 years experience specializing in designing resilient, high-scale cloud infrastructure on AWS and Kubernetes. Proven expertise in IaC, pipeline automation, and large-scale Linux environments.
+            Senior DevOps / SRE Engineer with 10+ years architecting and operating resilient multi-cloud platforms across AWS, Azure, and on-premises from national-scale government systems to client-facing applications. Proven record of 98% cloud cost reduction and 99.9%+ uptime.
           </p>
 
-          <div className="flex flex-wrap gap-4 mb-20">
+          <div className="flex flex-wrap gap-4 mb-6">
           <a href="mailto:salman.isha@hotmail.com" className="px-8 py-4 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition-all flex items-center gap-2 shadow-lg shadow-emerald-600/20">
               <Send className="w-5 h-5 text-white" /> <span className="text-white">Get In Touch</span>
             </a>
             <div className="flex items-center gap-3 px-4 border-l border-white/10 ml-2">
               <a href="https://linkedin.com/in/salmanisha/" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"><Linkedin className="w-5 h-5" /></a>
               <a href="https://github.com/Salmanisha" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"><Github className="w-5 h-5" /></a>
+              <a href="tel:+447599664271" className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"><Phone className="w-5 h-5" /></a>
             </div>
           </div>
+
+          <p className="flex items-center gap-2 text-slate-500 text-sm mb-20">
+            <MapPin size={16} className="text-blue-400" /> London, UK · Open to onsite / hybrid / UK remote
+          </p>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10 border-t border-white/5">
             {stats.map((stat, i) => (
@@ -233,7 +259,7 @@ const App = () => {
           </div>
 
           <div className="grid gap-6">
-            {projects.map((p, i) => (
+            {projects.filter(p => p.visible !== false).map((p, i) => (
               <div key={i} className="group relative bg-white/5 border border-white/5 rounded-3xl p-8 md:p-12 hover:bg-white/[0.07] transition-all overflow-hidden">
                 <div className="absolute top-0 right-0 p-8 text-blue-500/20 group-hover:text-blue-500/40 transition-colors">
                   <Terminal size={120} />
@@ -276,6 +302,30 @@ const App = () => {
         </div>
       </section>
 
+      {/* Skills Matrix */}
+      <section id="skills" className="py-24 bg-white/[0.01]">
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="mb-12">
+            <h2 className="text-sm font-bold text-blue-500 uppercase tracking-widest mb-4">Skills Matrix</h2>
+            <h3 className="text-4xl font-bold text-white">The Production Toolbox.</h3>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {skillGroups.map(g => (
+              <div key={g.category} className="p-6 bg-white/5 border border-white/5 rounded-2xl hover:border-blue-500/30 transition-all">
+                <h4 className="text-white font-bold mb-4 text-sm uppercase tracking-wider">{g.category}</h4>
+                <div className="flex flex-wrap gap-2">
+                  {g.skills.map(skill => (
+                    <span key={skill} className="px-3 py-1 bg-black/40 border border-white/10 rounded-full text-xs text-slate-300">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Experience & Education Section */}
       <section id="about" className="py-24">
         <div className="max-w-6xl mx-auto px-6">
@@ -312,7 +362,7 @@ const App = () => {
               <div className="space-y-8">
                 <div className="relative pl-8 border-l border-white/10">
                   <div className="absolute w-3 h-3 bg-purple-500 rounded-full -left-[6px] top-2 shadow-[0_0_10px_rgba(168,85,247,0.5)]"></div>
-                  <h4 className="font-bold text-white">MSc: Cyber Security</h4>
+                  <h4 className="font-bold text-white">MSc: Cyber Security with Professional Practice</h4>
                   <p className="text-slate-400 text-sm">University of Wolverhampton • 2022</p>
                 </div>
                 <div className="relative pl-8 border-l border-white/10">
@@ -328,18 +378,79 @@ const App = () => {
               <h3 className="text-2xl font-bold text-white mb-10">Professional Path</h3>
               <div className="space-y-12">
                 {[
-                  { company: "Neota", role: "DevOps Engineer", date: "2023 - Present", loc: "London" },
-                  { company: "Tiger IT Bangladesh", role: "DevOps Engineer", date: "2019 - 2021", loc: "Dhaka" },
-                  { company: "Wunderman Thompson", role: "Operations Engineer", date: "2015 - 2019", loc: "Dhaka" },
-                  { company: "Solution9 Limited", role: "IT Operations Engineer", date: "2011 - 2015", loc: "Dhaka" }
+                  {
+                    company: "Neota Logic Ltd",
+                    role: "DevOps Engineer",
+                    date: "2023 - Present",
+                    loc: "London",
+                    points: [
+                      "Cut monthly cloud spend by 98% (~$19k+ annualised) by resolving an EFS-to-EBS backup misconfiguration",
+                      "Built a centralised Zabbix platform spanning AWS & Azure — 100+ servers under threshold-based alerting",
+                      "Automated multi-cloud provisioning with Terraform & Ansible; 99.9% uptime on client-facing applications"
+                    ]
+                  },
+                  {
+                    company: "University of Wolverhampton",
+                    role: "Full-time MSc, Cyber Security",
+                    date: "2021 - 2022",
+                    loc: "UK",
+                    edu: true
+                  },
+                  {
+                    company: "Tiger IT Bangladesh",
+                    role: "DevOps Engineer",
+                    date: "2019 - 2021",
+                    loc: "Dhaka",
+                    points: [
+                      "Engineered core infrastructure for a government Biometric Residence Card system — millions of citizen records, 24/7 throughput",
+                      "Architected Kafka ingestion at 99.99% data durability; cut deployment time 60% with end-to-end Ansible automation"
+                    ]
+                  },
+                  {
+                    company: "Wunderman Thompson",
+                    role: "Operations Engineer",
+                    date: "2015 - 2019",
+                    loc: "Dhaka",
+                    points: [
+                      "Managed core AWS infrastructure across a hybrid Windows/Linux estate, owning database availability",
+                      "Automated the CI/CD pipeline with GoCD — ~40% faster time-to-market for new features"
+                    ]
+                  },
+                  {
+                    company: "Solution9 Limited",
+                    role: "IT Operations Engineer",
+                    date: "2011 - 2015",
+                    loc: "Dhaka",
+                    points: [
+                      "Maintained hybrid Linux/Windows infrastructure and Xen virtualisation for co-location clients",
+                      "Implemented configuration management and scheduled backups across production and development"
+                    ]
+                  }
                 ].map((exp, i) => (
                   <div key={i} className="group cursor-default relative pl-6 border-l border-white/5 hover:border-blue-500 transition-colors">
                     <div className="flex justify-between items-center mb-1 text-blue-500 font-mono text-xs uppercase tracking-widest font-bold">
-                      {exp.date}
+                      <span className="flex items-center gap-2">
+                        {exp.date}
+                        {exp.edu && (
+                          <span className="px-2 py-0.5 bg-purple-500/10 border border-purple-500/20 rounded-full text-purple-400 font-sans normal-case tracking-normal font-bold">
+                            Education
+                          </span>
+                        )}
+                      </span>
                       <span className="text-slate-600 font-sans tracking-normal font-normal text-xs lowercase italic">@{exp.loc}</span>
                     </div>
                     <h4 className="text-xl font-bold text-white group-hover:text-blue-400 transition-colors">{exp.role}</h4>
                     <p className="text-slate-500">{exp.company}</p>
+                    {exp.points && (
+                      <ul className="mt-3 space-y-2">
+                        {exp.points.map(pt => (
+                          <li key={pt} className="flex items-start gap-2 text-sm text-slate-400 leading-relaxed">
+                            <ChevronRight size={14} className="mt-1 shrink-0 text-blue-500" />
+                            {pt}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 ))}
               </div>
@@ -357,7 +468,7 @@ const App = () => {
               <span className="font-bold text-lg text-white tracking-tight">Mohd Salman Isha</span>
             </div>
             <p className="text-slate-500 max-w-xs text-sm">
-              SRE & DevOps specialist based in London. Let's build stable, scalable systems together.
+              Senior DevOps Engineer based in London. Let's build stable, scalable systems together.
             </p>
           </div>
           
@@ -366,6 +477,7 @@ const App = () => {
               <a href="https://linkedin.com/in/salmanisha/" className="text-slate-400 hover:text-white transition-all text-sm font-medium">LinkedIn</a>
               <a href="https://github.com/Salmanisha" className="text-slate-400 hover:text-white transition-all text-sm font-medium">GitHub</a>
               <a href="mailto:salman.isha@hotmail.com" className="text-slate-400 hover:text-white transition-all text-sm font-medium">Email</a>
+              <a href="tel:+447599664271" className="text-slate-400 hover:text-white transition-all text-sm font-medium">+44 7599 664271</a>
             </div>
             <p className="text-slate-600 text-xs">
               © {new Date().getFullYear()} Mohd Salman Isha. All rights reserved.
