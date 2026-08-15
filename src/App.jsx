@@ -17,7 +17,8 @@ import {
   CheckCircle2,
   Send,
   Phone,
-  MapPin
+  MapPin,
+  Activity
 } from 'lucide-react';
 
 const App = () => {
@@ -205,6 +206,7 @@ const App = () => {
               <a href="https://linkedin.com/in/salmanisha/" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"><Linkedin className="w-5 h-5" /></a>
               <a href="https://github.com/Salmanisha" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"><Github className="w-5 h-5" /></a>
               <a href="tel:+447599664271" className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors"><Phone className="w-5 h-5" /></a>
+              <a href="https://uptime.salmanisha.com/status/public" target="_blank" className="p-3 bg-white/5 rounded-full hover:bg-white/10 transition-colors" rel="noopener noreferrer"><Activity className="w-5 h-5 text-emerald-400" /></a>
             </div>
           </div>
 
@@ -477,7 +479,8 @@ const App = () => {
               <a href="https://linkedin.com/in/salmanisha/" className="text-slate-400 hover:text-white transition-all text-sm font-medium">LinkedIn</a>
               <a href="https://github.com/Salmanisha" className="text-slate-400 hover:text-white transition-all text-sm font-medium">GitHub</a>
               <a href="mailto:salman.isha@hotmail.com" className="text-slate-400 hover:text-white transition-all text-sm font-medium">Email</a>
-              <a href="tel:+447599664271" className="text-slate-400 hover:text-white transition-all text-sm font-medium">+44 7599 664271</a>
+              <a href="tel:+447599664271" className="text-slate-400 hover:text-white transition-all text-sm font-medium">Call</a>
+              <a href="https://uptime.salmanisha.com/status/public" target="_blank" className="text-slate-400 hover:text-emerald-400 transition-all text-sm font-medium" rel="noopener noreferrer">Status</a>
             </div>
             <p className="text-slate-600 text-xs">
               © {new Date().getFullYear()} Mohd Salman Isha. All rights reserved.
