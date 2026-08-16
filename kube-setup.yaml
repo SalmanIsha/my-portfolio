@@ -34,13 +34,14 @@ spec:
 # kubectl create ns portfolio-prod
 # docker hub personal access token
 
-kubectl create secret docker-registry dockerregcred --docker-server=https://index.docker.io/v1/ --docker-username=salmanisha --docker-password=<see lastpass for the docker token> --docker-email=salmanisha.sp@gmail.com
+#kubectl create secret docker-registry dockerregcred --docker-server=https://index.docker.io/v1/ --docker-username=salmanisha --docker-password=<see lastpass for the docker token> --docker-email=salmanisha.sp@gmail.com
 
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: portfolio-prod
+  namespace: portfolio-prod
 spec:
   replicas: 3
   selector:

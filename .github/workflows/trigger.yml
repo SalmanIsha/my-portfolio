@@ -1,0 +1,17 @@
+name: Trigger Deployment Pipeline
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  ping-private-repo:
+    runs-on: ubuntu-latest # Always use GitHub cloud for public events
+    steps:
+      - name: Send Repository Dispatch Event
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.PRIVATE_CONTENT_TOKEN }}
+          # Change this to YOUR GitHub username and YOUR private repository name
+          repository: SalmanIsha/portfolio-deploy.git 
+          event-type: public_code_updated

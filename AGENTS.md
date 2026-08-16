@@ -25,16 +25,15 @@ docker exec my-node-container npm run build
 ## Deploy flow (fully manual, no CI)
 
 1. `docker build -t salmanisha/portfolio:vX.Y.Z .` + `docker push` (multi-stage build: Node → nginx).
-2. Bump the hardcoded image tag in the Deployment in `kube-setup.yaml`, then apply to a K3s cluster fronted by Traefik **Gateway API** (Gateway + HTTPRoute, not Ingress).
-
-Gotcha: `kube-setup.yaml` **cannot be applied as-is**: it contains an uncommented shell command (~line 37) and a namespace mismatch (Deployment has no `namespace:`, Service/HPA are in `portfolio-prod`). See IMPROVEMENTS.md #1–2.
+2. Bump the hardcoded image tag in the Deployment in `kube-setup.yaml`, then apply to a K3s cluster fronted by Traefik **Gateway API** (Gateway + HTTPRoute, not Ingress), with an HPA in `portfolio-prod`.
+3. Public traffic arrives via **Cloudflare Tunnel** — TLS terminates at the Cloudflare edge; the Gateway listener stays plain HTTP.
 
 ## Repo quirks (don't be fooled)
 
-- Dead Vite-template files still tracked — don't edit them as if live: `src/App.jsx.old`, `src/assets/react.svg`, `public/vite.svg`, and `src/App.css` (never imported).
 - `src/index.css` mixes v4 (`@import "tailwindcss"`) with legacy v3 `@tailwind` directives plus leftover template styles (`body { display: flex }`, light-mode block). Cleanup pending (IMPROVEMENTS.md #4); the v4 Vite plugin is the source of truth.
 - `lucide-react` is wrongly in `devDependencies` (used at runtime); `autoprefixer`/`postcss` are unused leftovers.
 - The downloadable CV is `public/CV_Salman_Isha.pdf` — replace that file to update it.
+- Status page (currently **Uptime Kuma** at `https://uptime.salmanisha.com/status/public`; owner switching to **Uptime Robot** for now, Prometheus/Grafana stack planned later) — linked from hero + footer.
 
 ## Backlog
 

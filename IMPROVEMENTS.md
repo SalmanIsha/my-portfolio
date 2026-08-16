@@ -13,11 +13,11 @@ via Traefik Gateway API with an HPA. Local dev runs inside Docker.
 
 ## Phase 1: Fix what's broken (bugs)
 
-- [ ] **1. `kube-setup.yaml` invalid YAML** — line 37 is a raw, uncommented shell
+- [x] **1. `kube-setup.yaml` invalid YAML** (FIXED 2026-08-07) — line 37 is a raw, uncommented shell
   command (`kubectl create secret docker-registry ...`) between `---` separators.
   `kubectl apply -f kube-setup.yaml` will fail to parse. Comment it out or move
   it to a separate runbook.
-- [ ] **2. Namespace mismatch in `kube-setup.yaml`** — the `Deployment` has no
+- [x] **2. Namespace mismatch in `kube-setup.yaml`** (FIXED 2026-08-07) — the `Deployment` has no
   `namespace:` field (lands in `default`), but the `Service` and `HPA` are in
   `portfolio-prod`. Service selects no pods; HPA can't find its scale target.
   Add `namespace: portfolio-prod` to the Deployment metadata.
@@ -33,12 +33,13 @@ via Traefik Gateway API with an HPA. Local dev runs inside Docker.
 
 ## Phase 2: Housekeeping (dead code & deps)
 
-- [ ] **5. Delete `src/App.jsx.old`** — old Vite demo counter app, committed to git.
-- [ ] **6. Delete `src/assets/react.svg` and `public/vite.svg`** — template leftovers.
-- [ ] **7. Delete `src/App.css`** — never imported.
-- [ ] **8. Remove unused lucide imports** in `App.jsx`: `Mail`, `Database`,
-  `ChevronRight`. Note: ESLint rule `varsIgnorePattern: '^[A-Z_]'` hides these.
-- [ ] **9. Remove unnecessary `import React`** in `App.jsx` (automatic JSX runtime).
+- [x] **5. Delete `src/App.jsx.old`** (FIXED 2026-08-07) — old Vite demo counter app, committed to git.
+- [x] **6. Delete `src/assets/react.svg` and `public/vite.svg`** (FIXED 2026-08-07) — template leftovers.
+- [x] **7. Delete `src/App.css`** (FIXED 2026-08-07) — never imported.
+- [x] **8. Remove unused lucide imports** in `App.jsx` (FIXED 2026-08-07): `Mail`,
+  `Database` removed; `ChevronRight` retained — now used for timeline bullets.
+  Note: ESLint rule `varsIgnorePattern: '^[A-Z_]'` hides capitalized imports.
+- [x] **9. Remove unnecessary `import React`** in `App.jsx` (FIXED 2026-08-07) — automatic JSX runtime.
 - [ ] **10. Fix dependencies in `package.json`**:
   - Move `lucide-react` from `devDependencies` to `dependencies` (runtime dep).
   - Remove `autoprefixer` and `postcss` (unneeded with Tailwind v4 Vite plugin).
@@ -53,8 +54,9 @@ via Traefik Gateway API with an HPA. Local dev runs inside Docker.
 - [ ] **13. Secure Headlamp** — Kubernetes dashboard is publicly exposed at
   `headlamp.salmanisha.com` with no auth middleware in the manifest. Add basic
   auth / OIDC middleware or restrict access.
-- [ ] **14. Add HTTPS** — Gateway only has an HTTP listener on port 8000. Add a
-  TLS listener (cert-manager / Let's Encrypt) and an HTTP -> HTTPS redirect.
+- [x] **14. Add HTTPS** (RESOLVED 2026-08-07) — public traffic now served via
+  **Cloudflare Tunnel**, so TLS is terminated at the Cloudflare edge (free
+  certs, WAF/DDoS protection). No cert-manager/Let's Encrypt needed.
 - [ ] **15. nginx hardening** — add custom nginx.conf with:
   - Security headers: CSP, X-Frame-Options, X-Content-Type-Options, Referrer-Policy
   - gzip + long-cache headers for hashed assets in `/assets`
@@ -97,13 +99,28 @@ via Traefik Gateway API with an HPA. Local dev runs inside Docker.
 
 ## Priority summary
 
-| Phase | Items | Effort |
+| Phase | Items | Status |
 |-------|-------|--------|
-| 1. Fix what's broken | 1-4 | Small |
-| 2. Housekeeping | 5-11 | Small |
-| 3. Security & SEO | 12-20 | Small-Medium |
-| 4. CI/CD | 21-22 | Medium |
-| 5. Polish | 23-26 | Medium |
+| 1. Fix what's broken | 1-4 | #1-3 done; #4 open |
+| 2. Housekeeping | 5-11 | #5-9, #11 done; #10 open |
+| 3. Security & SEO | 12-20 | #14 done (Cloudflare Tunnel); #12, #13, #15-20 open |
+| 4. CI/CD | 21-22 | open |
+| 5. Polish | 23-26 | open |
+
+## Senior DevOps showcase roadmap (priority order)
+
+The repo is now **safe to show** (manifests apply cleanly, dead files gone,
+repo documented). Remaining work to make it a convincing Senior DevOps artifact:
+
+1. **CI/CD (#21)** — GitHub Actions: lint -> build -> docker build/push -> apply
+   manifest. This is THE missing piece; no senior DevOps claim is credible
+   without a pipeline on your own project.
+2. **GitOps / self-hosted card** — wire ArgoCD or Flux to auto-deploy, then
+   reveal the 4th project card (C2) so it's visible publicly.
+3. **Monitoring** — already live (Uptime Kuma / Uptime Robot); upgrade to
+   Prometheus/Grafana later and point the hero/footer status link at it.
+4. **TLS** — handled by Cloudflare Tunnel (#14 done).
+5. **Polish (#23)** — probes, securityContext, PDB on the Deployment.
 
 ---
 
