@@ -13,5 +13,5 @@ jobs:
         with:
           token: ${{ secrets.PRIVATE_CONTENT_TOKEN }}
           # Change this to YOUR GitHub username and YOUR private repository name
-          repository: SalmanIsha/portfolio-deploy.git 
+          repository: SalmanIsha/portfolio-deploy
           event-type: public_code_updated
