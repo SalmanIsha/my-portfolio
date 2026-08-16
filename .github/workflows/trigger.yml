@@ -15,3 +15,6 @@ jobs:
           # Change this to YOUR GitHub username and YOUR private repository name
           repository: SalmanIsha/portfolio-deploy
           event-type: public_code_updated
+      
+      - name: say hello to private repo
+        run: echo "Sent hello to the private repository"
