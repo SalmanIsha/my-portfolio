@@ -88,3 +88,6 @@ Manual, no CI/CD (tracked in `IMPROVEMENTS.md` #21):
 ## License
 
 Personal project — all rights reserved.
+
+## Note
+A private reposity is created to securly build and push the docker image in docker hub
